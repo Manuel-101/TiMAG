@@ -19,6 +19,8 @@ export class RoutineService {
   }
 
   getOne(id: string){
+    // return (await this.routines.toPromise()).find
+
     // todo
     //return this.routinesCollection.get(find(p => p.id == id));
   }
