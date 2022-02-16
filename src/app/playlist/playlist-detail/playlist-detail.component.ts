@@ -20,12 +20,12 @@ export class PlaylistDetailComponent implements OnInit {
     private modalController: ModalController) { }
 
   ngOnInit(): void {
-    this.playlist = this.playlistService.getOne(+this.route.snapshot.params.id);
+    // this.playlist = this.playlistService.getOne(+this.route.snapshot.params.id);
   }
 
   delete(todo: Todo) {
     this.playlistService.removeTodo(this.playlist.id, todo);
-    this.playlist = this.playlistService.getOne(+this.route.snapshot.params.id);
+    // this.playlist = this.playlistService.getOne(+this.route.snapshot.params.id);
   }
 
   async openModal() {
@@ -36,7 +36,7 @@ export class PlaylistDetailComponent implements OnInit {
       }
     });
     await modal.present();
-    this.playlist = this.playlistService.getOne(+this.route.snapshot.params.id);
+    // this.playlist = this.playlistService.getOne(+this.route.snapshot.params.id);
   }
 
 }
