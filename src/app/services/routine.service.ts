@@ -18,6 +18,11 @@ export class RoutineService {
     return this.routines;
   }
 
+  getOne(id: string){
+    // todo
+    //return this.routinesCollection.get(find(p => p.id == id));
+  }
+
   addRoutine(routine: Routine){
     return this.routinesCollection.add(Object.assign({},routine))
   }
