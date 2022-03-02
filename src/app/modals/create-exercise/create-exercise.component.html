@@ -1,4 +1,4 @@
-<form [formGroup]="todoForm" (ngSubmit)="addTodo()">
+<form [formGroup]="exerciseForm" (ngSubmit)="addExercise()">
     <ion-item>
         <ion-label position="stacked">Name</ion-label>
         <ion-input formControlName="name"></ion-input>
@@ -9,5 +9,5 @@
         <ion-input formControlName="description"></ion-input>
     </ion-item>
 
-    <ion-button [disabled]="todoForm.invalid" expand="block" type="submit">Validate</ion-button>
+    <ion-button [disabled]="exerciseForm.invalid" expand="block" type="submit">Validate</ion-button>
 </form>

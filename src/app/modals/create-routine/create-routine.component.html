@@ -1,0 +1,8 @@
+<form [formGroup]="routineForm" (ngSubmit)="addRoutine()">
+  <ion-item>
+    <ion-label position="stacked">Name</ion-label>
+    <ion-input formControlName="name"></ion-input>
+  </ion-item>
+
+  <ion-button [disabled]="routineForm.invalid" expand="block" type="submit">Validate</ion-button>
+</form>

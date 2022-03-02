@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PlaylistPage } from './playlist.page';
+import { RoutinePage } from './routine.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: PlaylistPage,
+    component: RoutinePage,
   },{
     path: ':id',
-    loadChildren: () => import('./playlist-detail/playlist-detail.module').then(m => m.PlaylistDetailModule),
+    loadChildren: () => import('./routine-detail/routine-detail.module').then(m => m.RoutineDetailModule),
   }
 ];
 
@@ -16,4 +16,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PlaylistPageRoutingModule {}
+export class RoutinePageRoutingModule {}
