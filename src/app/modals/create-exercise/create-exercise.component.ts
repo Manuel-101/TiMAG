@@ -11,7 +11,7 @@ import { RoutineService } from 'src/app/services/routine.service';
 })
 export class CreateExerciseComponent implements OnInit {
 
-  @Input() routineId: number;
+  @Input() routineId: string;
 
   exerciseForm: FormGroup;
 
@@ -27,8 +27,8 @@ export class CreateExerciseComponent implements OnInit {
   }
 
   addExercise() {
-    this.routineService.addExercise(this.routineId, new Exercise(this.exerciseForm.get('name').value, this.exerciseForm.get('description').value, "1"));
-    this.modalController.dismiss();
+    //this.routineService.addExercise(this.routineId, new Exercise(this.exerciseForm.get('name').value, this.exerciseForm.get('description').value,"1", 3, "ballsack"));
+    //this.modalController.dismiss();
   }
 
 }

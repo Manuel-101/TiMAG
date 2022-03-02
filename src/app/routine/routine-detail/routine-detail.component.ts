@@ -18,9 +18,12 @@ export class RoutineDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private routineService: RoutineService,
     private modalController: ModalController) { }
+    
+  async ngOnInit(): Promise<void> {
+    this.routine = await this.routineService.getOne(this.route.snapshot.params.id);
+    console.log(this.routine);
+    
 
-  ngOnInit(): void {
-    // this.routine = this.routineService.getOne(+this.route.snapshot.params.id);
   }
 
   delete(exercise: Exercise) {

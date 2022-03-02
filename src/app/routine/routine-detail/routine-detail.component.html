@@ -16,7 +16,7 @@
   <div id="container">
     <ion-list>
 
-      <ion-item-sliding *ngFor="let exercise of routine.exercises">
+      <ion-item-sliding *ngFor="let exercise of routine?.exercises">
         <ion-item>
           <ion-label>{{ exercise.name }}</ion-label>
         </ion-item>
