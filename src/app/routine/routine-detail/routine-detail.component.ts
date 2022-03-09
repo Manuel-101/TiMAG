@@ -27,6 +27,7 @@ export class RoutineDetailComponent implements OnInit {
   }
 
   delete(exercise: Exercise) {
+    // todo
     // this.routineService.removeExercise(this.routine.id, exercise);
     // this.routine = this.routineService.getOne(+this.route.snapshot.params.id);
   }
@@ -39,7 +40,7 @@ export class RoutineDetailComponent implements OnInit {
       }
     });
     await modal.present();
-    // this.routine = this.routineService.getOne(+this.route.snapshot.params.id);
+    this.routine = await this.routineService.getOne('routines/'+this.route.snapshot.params.id);
   }
 
 }
