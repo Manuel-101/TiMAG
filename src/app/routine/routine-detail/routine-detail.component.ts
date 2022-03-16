@@ -41,7 +41,6 @@ export class RoutineDetailComponent implements OnInit {
       }
     });
     await modal.present();
-    // this.routine$ = await this.routineService.getOne('routines/'+this.route.snapshot.params.id);
   }
 
 }

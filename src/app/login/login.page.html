@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <ion-item>
+      <ion-label position="stacked">Login</ion-label>
+      <ion-input formControlName="login"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Password</ion-label>
+      <ion-input formControlName="password" type="password"></ion-input>
+    </ion-item>
+    <ion-button [disabled]="loginForm.invalid" expand="block" type="submit">Validate</ion-button>
+  </form>
+  <ion-button [routerLink]="['/register']">Register</ion-button>
+  <ion-button [routerLink]="['/password-recovery']">Forgot password</ion-button>
+
+</ion-content>
