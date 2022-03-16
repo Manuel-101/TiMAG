@@ -4,7 +4,7 @@ import { combineLatest, EMPTY, Observable } from 'rxjs';
 import { Exercise } from '../models/exercise';
 import { Routine } from '../models/routine';
 
-import { flatMap, map } from 'rxjs/operators';
+import { flatMap, map, single, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +31,7 @@ export class RoutineService {
 
     this.routines = this.routinesCollection.valueChanges({ idField: 'id' }).pipe(
       map((routines: Routine[]) =>
-        routines.map(routine => {
+        routines.map((routine: Routine) => {
           return this.afs
             .collection(`routines/${routine.id}/exercises`).valueChanges({ idField: 'id' }).pipe(
               map(exercises =>
@@ -42,6 +42,8 @@ export class RoutineService {
       ),
       flatMap(combined => combineLatest(combined))
     );
+    this.routines.subscribe(console.log);
+
   }
 
   getAll() {
@@ -53,10 +55,35 @@ export class RoutineService {
 
   }
 
-  async getOne(id: string) {
+  async getOne(id: string): Observable<Routine> {
+    return this.afs.doc<Routine>(`routines/${id}`).valueChanges({ idField: 'id' }).pipe(
+      switchMap(
+        async (
+          routine) => Object.assign(routine, { exercises: ['test'] })
+      //   (routine: Routine) => {
+      //   return this.afs.collection(`routines/${routine.id}/exercises`).valueChanges({ idField: 'id' }).pipe(
+      //       map(exercises =>
+      //         Object.assign(routine, { exercises: exercises })
+      //       )
+      //     );
+      // }
+      ),
+    );
 
-    return (await this.routinesCollection.doc(id).get().toPromise()).data();
 
+    this.routines = this.routinesCollection.valueChanges({ idField: 'id' }).pipe(
+      map((routines: Routine[]) =>
+        routines.map((routine: Routine) => {
+          return this.afs
+            .collection(`routines/${routine.id}/exercises`).valueChanges({ idField: 'id' }).pipe(
+              map(exercises =>
+                Object.assign(routine, { exercises: exercises })
+              )
+            );
+        })
+      ),
+      flatMap(combined => combineLatest(combined))
+    );
 
     // return await this.routines.pipe(
     //   switchMap((routines: Routine[]) =>

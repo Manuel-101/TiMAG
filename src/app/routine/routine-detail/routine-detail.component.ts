@@ -5,6 +5,7 @@ import { CreateExerciseComponent } from 'src/app/modals/create-exercise/create-e
 import { Routine } from 'src/app/models/routine';
 import { Exercise } from 'src/app/models/exercise';
 import { RoutineService } from 'src/app/services/routine.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-routine-detail',
@@ -13,15 +14,15 @@ import { RoutineService } from 'src/app/services/routine.service';
 })
 export class RoutineDetailComponent implements OnInit {
 
-  public routine: Routine;
+  public routine$: Observable<Routine>;
 
   constructor(private route: ActivatedRoute,
     private routineService: RoutineService,
     private modalController: ModalController) { }
     
   async ngOnInit(): Promise<void> {
-    this.routine = await this.routineService.getOne(this.route.snapshot.params.id);
-    console.log(this.routine);
+    this.routine$ = await this.routineService.getOne(this.route.snapshot.params.id);
+    console.log(this.routine$);
     
 
   }
@@ -36,11 +37,11 @@ export class RoutineDetailComponent implements OnInit {
     const modal = await this.modalController.create({
       component: CreateExerciseComponent,
       componentProps: {
-        routineId: this.routine.id
+        routine: this.routine$
       }
     });
     await modal.present();
-    this.routine = await this.routineService.getOne('routines/'+this.route.snapshot.params.id);
+    this.routine$ = await this.routineService.getOne('routines/'+this.route.snapshot.params.id);
   }
 
 }
