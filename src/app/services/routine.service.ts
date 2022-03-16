@@ -60,10 +60,8 @@ export class RoutineService {
   }
 
   addExercise(routineId: string, exercise: Exercise) {
-    this.afs.collection("routines", ref => ref.where('id', '==', routineId)).add(exercise);
-    //this.routinesCollection.doc(routineId).collection('exercises').doc(exercise.id).set(exercise);
+    this.afs.collection<Exercise>(`routines/${routineId}/exercises`).add(Object.assign({}, exercise))
   }
-
 
   // getAll() {
   //   return this.playlists;

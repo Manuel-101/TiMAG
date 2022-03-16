@@ -27,8 +27,11 @@ export class CreateExerciseComponent implements OnInit {
   }
 
   addExercise() {
-    //this.routineService.addExercise(this.routineId, new Exercise(this.exerciseForm.get('name').value, this.exerciseForm.get('description').value,"1", 3, "ballsack"));
-    //this.modalController.dismiss();
+    console.log("hey guys i'm here")
+    this.routineService.addExercise(this.routineId, new Exercise(this.exerciseForm.get('name').value, this.exerciseForm.get('description').value,"1", 3, "ballsacker"));
+    
+    this.modalController.dismiss();
+    //this.routineService.addExercise
   }
 
 }
