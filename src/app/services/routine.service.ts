@@ -15,19 +15,6 @@ export class RoutineService {
 
   constructor(private afs: AngularFirestore) {
     this.routinesCollection = this.afs.collection<Routine>('routines');
-    // this.routines = this.routinesCollection.valueChanges({ idField: 'id' });
-
-
-    // this.routines = this.routinesCollection.valueChanges({ idField: 'id' }).pipe(
-    //   switchMap((routines: Routine[]) => routines.map(routine => {
-    //     return this.afs.collection<Exercise>(`routines/${routine.id}/exercises`)
-    //       .valueChanges()
-    //       .pipe(
-    //         switchMap(async (subdocuments) => Object.assign(routine, { exercises: subdocuments })
-    //         )
-    //       );
-    //   })
-    //   ));
 
     this.routines = this.routinesCollection.valueChanges({ idField: 'id' }).pipe(
       map((routines: Routine[]) =>
@@ -55,55 +42,17 @@ export class RoutineService {
 
   }
 
-  async getOne(id: string): Observable<Routine> {
-    return this.afs.doc<Routine>(`routines/${id}`).valueChanges({ idField: 'id' }).pipe(
-      switchMap(
-        async (
-          routine) => Object.assign(routine, { exercises: ['test'] })
-      //   (routine: Routine) => {
-      //   return this.afs.collection(`routines/${routine.id}/exercises`).valueChanges({ idField: 'id' }).pipe(
-      //       map(exercises =>
-      //         Object.assign(routine, { exercises: exercises })
-      //       )
-      //     );
-      // }
-      ),
-    );
-
-
-    this.routines = this.routinesCollection.valueChanges({ idField: 'id' }).pipe(
-      map((routines: Routine[]) =>
-        routines.map((routine: Routine) => {
-          return this.afs
-            .collection(`routines/${routine.id}/exercises`).valueChanges({ idField: 'id' }).pipe(
-              map(exercises =>
-                Object.assign(routine, { exercises: exercises })
-              )
-            );
-        })
-      ),
-      flatMap(combined => combineLatest(combined))
-    );
-
-    // return await this.routines.pipe(
-    //   switchMap((routines: Routine[]) =>
-    //     routines.map(routine => {
-    //       return this.afs.collection(`routines/${routine.id}/exercises`)
-    //         .valueChanges()
-    //         .pipe(
-    //           switchMap(async (subdocuments) => Object.assign(document, { exercises: subdocuments })
-    //           )
-    //         );
-    //     })
-    //   ),
-    //   // flatMap(combined => combineLatest(combined))
-    // );
-
-    // doc = fs.doc(this.fr, 'playlist/${playlistId]}') as fr docref playlist
-    // todocol = fr fromCollectionRef(this.firestore, playlist/playlistId todos) as fr collect
-    // return fr.docdata>playlist>(docn [idField: 'id']).pipe{
-    //   switchmap(playlist => fr collectiondata>todo>(todocollection, {idField: 'id'}).pipe(map))
-    // }
+  getOne(id: string): Observable<Routine> {
+    return this.afs.doc<Routine>(`routines/${id}`).valueChanges({ idField: 'id' })
+      .pipe(
+        switchMap((routine: Routine) => {
+          return this.afs.collection(`routines/${routine.id}/exercises`).valueChanges({ idField: 'id' }).pipe(
+            map(exercises =>
+              Object.assign(routine, { exercises: exercises })
+            )
+          );
+        }),
+      );
   }
 
   addRoutine(routine: Routine) {

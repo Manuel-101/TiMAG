@@ -23,7 +23,7 @@ export class RoutineDetailComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.routine$ = await this.routineService.getOne(this.route.snapshot.params.id);
     console.log(this.routine$);
-    
+    this.routine$.subscribe(console.log);
 
   }
 
@@ -41,7 +41,7 @@ export class RoutineDetailComponent implements OnInit {
       }
     });
     await modal.present();
-    this.routine$ = await this.routineService.getOne('routines/'+this.route.snapshot.params.id);
+    // this.routine$ = await this.routineService.getOne('routines/'+this.route.snapshot.params.id);
   }
 
 }
