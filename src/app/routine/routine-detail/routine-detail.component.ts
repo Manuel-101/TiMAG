@@ -37,7 +37,7 @@ export class RoutineDetailComponent implements OnInit {
     const modal = await this.modalController.create({
       component: CreateExerciseComponent,
       componentProps: {
-        routine: this.routine$
+        routineId: this.route.snapshot.params.id
       }
     });
     await modal.present();

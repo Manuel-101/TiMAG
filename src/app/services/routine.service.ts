@@ -60,7 +60,10 @@ export class RoutineService {
   }
 
   addExercise(routineId: string, exercise: Exercise) {
-    this.afs.collection<Exercise>(`routines/${routineId}/exercises`).add(Object.assign({}, exercise))
+    this.afs.collection<Exercise>(`routines/${routineId}/exercises`).add(Object.assign({}, exercise));
+    console.log(exercise);
+    console.log(routineId);
+    
   }
 
   // getAll() {
