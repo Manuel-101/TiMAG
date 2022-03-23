@@ -16,10 +16,10 @@ export class RoutinePage implements OnInit {
 
   constructor(private routineService: RoutineService,
     private modalController: ModalController) {
-    this.routines$ = routineService.getAll();
   }
 
   ngOnInit(): void {
+    this.routines$ = this.routineService.getAll();
   }
 
   // delete(routine: Routine) {

@@ -1,20 +1,28 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { combineLatest, EMPTY, Observable } from 'rxjs';
 import { Exercise } from '../models/exercise';
 import { Routine } from '../models/routine';
 
 import { flatMap, map, single, switchMap } from 'rxjs/operators';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RoutineService {
+export class RoutineService implements OnInit {
   routines: Observable<(Routine & { exercises: Exercise[] })[]> = EMPTY;
   routinesCollection: AngularFirestoreCollection<Routine>;
 
-  constructor(private afs: AngularFirestore) {
-    this.routinesCollection = this.afs.collection<Routine>('routines');
+  constructor(
+    private afs: AngularFirestore,
+    private auth: AngularFireAuth,
+  ) { }
+
+  async ngOnInit(): Promise<void> {
+    // this.routinesCollection = this.afs.collection<Routine>('routines');
+    const owner = await this.auth.currentUser;
+    this.routinesCollection = this.afs.collection<Routine>('routines', ref => ref.where('owner', '!=', owner.uid));
 
     this.routines = this.routinesCollection.valueChanges({ idField: 'id' }).pipe(
       map((routines: Routine[]) =>
@@ -30,13 +38,12 @@ export class RoutineService {
       flatMap(combined => combineLatest(combined))
     );
     this.routines.subscribe(console.log);
-
   }
 
   getAll() {
     return this.routines;
-
-    // const owner = this.afs.collection('playlists',ref => ref.where('owner', '=', id)).valueChanges(idfield)
+    // const owner = await this.auth.currentUser;
+    // return this.afs.collection<Routine>('routines', ref => ref.where('owner', '==', owner.uid)).valueChanges({ idfield: 'id' });
     // combineLatest([ownern reader]).pipe()
     // return AngularFirestore.collectionData()
 
@@ -55,15 +62,16 @@ export class RoutineService {
       );
   }
 
-  addRoutine(routine: Routine) {
-    return this.routinesCollection.add(Object.assign({}, routine))
+  async addRoutine(routineName: string) {
+    const routine = new Routine(routineName, (await this.auth.currentUser).uid);
+    return await this.routinesCollection.add(Object.assign({}, routine));
   }
 
   addExercise(routineId: string, exercise: Exercise) {
     this.afs.collection<Exercise>(`routines/${routineId}/exercises`).add(Object.assign({}, exercise));
     console.log(exercise);
     console.log(routineId);
-    
+
   }
 
   // getAll() {

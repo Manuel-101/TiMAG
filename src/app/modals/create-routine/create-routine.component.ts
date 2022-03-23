@@ -21,7 +21,7 @@ export class CreateRoutineComponent implements OnInit {
   ngOnInit() { }
 
   addRoutine() {
-    this.routineService.addRoutine(new Routine(this.routineForm.get('name').value));
+    this.routineService.addRoutine(this.routineForm.get('name').value);
     this.modalController.dismiss();
   }
 
