@@ -18,8 +18,8 @@ export class RoutinePage implements OnInit {
     private modalController: ModalController) {
   }
 
-  ngOnInit(): void {
-    this.routines$ = this.routineService.getAll();
+  async ngOnInit() {
+    this.routines$ = await this.routineService.getAll();
   }
 
   // delete(routine: Routine) {

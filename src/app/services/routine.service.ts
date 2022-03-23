@@ -10,7 +10,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 @Injectable({
   providedIn: 'root'
 })
-export class RoutineService implements OnInit {
+export class RoutineService {
   routines: Observable<(Routine & { exercises: Exercise[] })[]> = EMPTY;
   routinesCollection: AngularFirestoreCollection<Routine>;
 
@@ -19,10 +19,12 @@ export class RoutineService implements OnInit {
     private auth: AngularFireAuth,
   ) { }
 
-  async ngOnInit(): Promise<void> {
+  async getAll() {
     // this.routinesCollection = this.afs.collection<Routine>('routines');
     const owner = await this.auth.currentUser;
-    this.routinesCollection = this.afs.collection<Routine>('routines', ref => ref.where('owner', '!=', owner.uid));
+    console.log(owner);
+    
+    this.routinesCollection = this.afs.collection<Routine>('routines', ref => ref.where('owner', '==', owner.uid));
 
     this.routines = this.routinesCollection.valueChanges({ idField: 'id' }).pipe(
       map((routines: Routine[]) =>
@@ -38,9 +40,10 @@ export class RoutineService implements OnInit {
       flatMap(combined => combineLatest(combined))
     );
     this.routines.subscribe(console.log);
+    return this.routines;
   }
 
-  getAll() {
+  getAldddsl() {
     return this.routines;
     // const owner = await this.auth.currentUser;
     // return this.afs.collection<Routine>('routines', ref => ref.where('owner', '==', owner.uid)).valueChanges({ idfield: 'id' });
