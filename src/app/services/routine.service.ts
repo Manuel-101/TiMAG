@@ -20,26 +20,26 @@ export class RoutineService {
   ) { }
 
   async getAll() {
-    // this.routinesCollection = this.afs.collection<Routine>('routines');
-    const owner = await this.auth.currentUser;
-    console.log(owner);
-    
-    this.routinesCollection = this.afs.collection<Routine>('routines', ref => ref.where('owner', '==', owner.uid));
-
-    this.routines = this.routinesCollection.valueChanges({ idField: 'id' }).pipe(
-      map((routines: Routine[]) =>
-        routines.map((routine: Routine) => {
-          return this.afs
-            .collection(`routines/${routine.id}/exercises`).valueChanges({ idField: 'id' }).pipe(
-              map(exercises =>
-                Object.assign(routine, { exercises: exercises })
-              )
-            );
-        })
-      ),
-      flatMap(combined => combineLatest(combined))
-    );
-    this.routines.subscribe(console.log);
+    if (this.routines === EMPTY) {
+      const owner = await this.auth.currentUser;
+      
+      this.routinesCollection = this.afs.collection<Routine>('routines', ref => ref.where('owner', '==', owner.uid));
+      this.routines = this.routinesCollection.valueChanges({ idField: 'id' });
+      // .pipe(
+      //   map((routines: Routine[]) =>
+      //     routines.map((routine: Routine) => {
+      //       return this.afs
+      //         .collection(`routines/${routine.id}/exercises`).valueChanges({ idField: 'id' }).pipe(
+      //           map(exercises =>
+      //             Object.assign(routine, { exercises: exercises })
+      //           )
+      //         );
+      //     })
+      //   ),
+      //   flatMap(combined => combineLatest(combined))
+      // );
+      this.routines.subscribe(console.log);
+    }
     return this.routines;
   }
 
