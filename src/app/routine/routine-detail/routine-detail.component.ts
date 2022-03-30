@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { CreateExerciseComponent } from 'src/app/modals/create-exercise/create-exercise.component';
 import { Routine } from 'src/app/models/routine';
@@ -18,7 +18,8 @@ export class RoutineDetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
     private routineService: RoutineService,
-    private modalController: ModalController) { }
+    private modalController: ModalController,
+    private router: Router) { }
     
   async ngOnInit(): Promise<void> {
     this.routine$ = await this.routineService.getOne(this.route.snapshot.params.id);
@@ -42,5 +43,8 @@ export class RoutineDetailComponent implements OnInit {
     });
     await modal.present();
   }
-
+  async deleteRoutine() {
+    await this.routineService.deleteOne(this.route.snapshot.params.id);
+    await this.router.navigate(['/routine']);
+  }
 }

@@ -43,6 +43,13 @@ export class RoutineService {
     return this.routines;
   }
 
+  async deleteOne(id: string): Promise<void> {
+
+    const owner = await this.auth.currentUser;
+    await this.afs.doc(`routines/${id}`).delete();
+    //await this.routinesCollection.doc(id).delete();
+  }
+
   getAldddsl() {
     return this.routines;
     // const owner = await this.auth.currentUser;
@@ -64,6 +71,8 @@ export class RoutineService {
         }),
       );
   }
+
+
 
   async addRoutine(routineName: string) {
     const routine = new Routine(routineName, (await this.auth.currentUser).uid);
