@@ -1,6 +1,8 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
-import { combineLatest, EMPTY, Observable } from 'rxjs';
+import firebase from 'firebase/compat/app';
+// import * as firebase from 'firebase';
+import { EMPTY, Observable } from 'rxjs';
 import { Exercise } from '../models/exercise';
 import { Routine } from '../models/routine';
 
@@ -22,9 +24,12 @@ export class RoutineService {
   async getAll() {
     if (this.routines === EMPTY) {
       const owner = await this.auth.currentUser;
-      
+
       this.routinesCollection = this.afs.collection<Routine>('routines', ref => ref.where('owner', '==', owner.uid));
       this.routines = this.routinesCollection.valueChanges({ idField: 'id' });
+      // todo get routine where i am the reader or writer
+      // todo if user in routine.readers
+      // todo modify rules
       // .pipe(
       //   map((routines: Routine[]) =>
       //     routines.map((routine: Routine) => {
@@ -84,6 +89,26 @@ export class RoutineService {
     console.log(exercise);
     console.log(routineId);
 
+  }
+
+
+  addReader(routineId: string, reader: string) {
+    this.afs.doc(`routines/${routineId}`).update({
+      readers: firebase.firestore.FieldValue.arrayUnion(reader)
+    });
+  }
+
+  addWriter(routineId: string, writer: string) {
+    this.afs.doc(`routines/${routineId}`).update({
+      writers: firebase.firestore.FieldValue.arrayUnion(writer)
+    });
+  }
+
+  removeRights(routineId: string, member: string) {
+    this.afs.doc(`routines/${routineId}`).update({
+      readers: firebase.firestore.FieldValue.arrayRemove(member),
+      writers: firebase.firestore.FieldValue.arrayRemove(member),
+    });
   }
 
   // getAll() {

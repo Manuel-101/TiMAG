@@ -5,6 +5,7 @@ import { RoutineDetailRoutingModule } from './routine-detail-routing.module';
 import { IonicModule } from '@ionic/angular';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CreateExerciseComponent } from 'src/app/modals/create-exercise/create-exercise.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -14,9 +15,10 @@ import { CreateExerciseComponent } from 'src/app/modals/create-exercise/create-e
   ],
   imports: [
     CommonModule,
+    RouterModule,
     IonicModule,
     ReactiveFormsModule,
-    RoutineDetailRoutingModule
+    RoutineDetailRoutingModule,
   ]
 })
 export class RoutineDetailModule { }

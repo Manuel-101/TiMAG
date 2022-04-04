@@ -6,6 +6,7 @@ import { Routine } from 'src/app/models/routine';
 import { Exercise } from 'src/app/models/exercise';
 import { RoutineService } from 'src/app/services/routine.service';
 import { Observable } from 'rxjs';
+import { ChangeRightsComponent } from 'src/app/modals/change-rights/change-rights.component';
 
 @Component({
   selector: 'app-routine-detail',
@@ -20,7 +21,7 @@ export class RoutineDetailComponent implements OnInit {
     private routineService: RoutineService,
     private modalController: ModalController,
     private router: Router) { }
-    
+
   async ngOnInit(): Promise<void> {
     this.routine$ = await this.routineService.getOne(this.route.snapshot.params.id);
     console.log(this.routine$);
@@ -46,5 +47,16 @@ export class RoutineDetailComponent implements OnInit {
   async deleteRoutine() {
     await this.routineService.deleteOne(this.route.snapshot.params.id);
     await this.router.navigate(['/routine']);
+
+  }
+  async changeRights() {
+    const modal = await this.modalController.create({
+      component: ChangeRightsComponent,
+      id: 'changeRights',
+      componentProps: {
+        routineId: this.route.snapshot.params.id
+      }
+    });
+    await modal.present();
   }
 }

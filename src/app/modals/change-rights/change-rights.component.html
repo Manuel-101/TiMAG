@@ -1,0 +1,36 @@
+<ion-list>
+  <ng-container *ngIf="routine$ | async as routine">
+
+    <ion-item-sliding *ngFor="let member of routine.writers">
+      <ion-item>
+        <ion-label>{{ member }}</ion-label>
+        <ion-select value="writer" (ionChange)="setType($event, member)">
+          <ion-select-option value="reader">reader</ion-select-option>
+          <ion-select-option value="writer">writer</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option (click)="remove(member)" color="danger">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
+    <ion-item-sliding *ngFor="let member of routine.readers">
+      <ion-item>
+        <ion-label>{{ member }}</ion-label>
+        <ion-select value="reader" (ionChange)="setType($event, member)">
+          <ion-select-option value="reader">reader</ion-select-option>
+          <ion-select-option value="writer">writer</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option (click)="remove(member)" color="danger">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ng-container>
+</ion-list>
+
+<ion-button expand="block" (click)="addReader()">Add</ion-button>
