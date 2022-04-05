@@ -24,9 +24,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
-    <ion-button expand="block" (click)="addExercise()">Add Exercise</ion-button>
-    <ion-button expand="block" (click)="deleteRoutine()">Delete Routine</ion-button>
-    <ion-button expand="block" (click)="changeRights()">Change Rights</ion-button>
-  </ion-toolbar>
+  <ion-button expand="block" (click)="addExercise()" *ngIf="canWrite()">Add Exercise</ion-button>
+  <ion-button expand="block" (click)="deleteRoutine()" *ngIf="canWrite()">Delete Routine</ion-button>
+  <ion-button expand="block" (click)="changeRights()" *ngIf="isOwner()">Change Rights</ion-button>
 </ion-footer>

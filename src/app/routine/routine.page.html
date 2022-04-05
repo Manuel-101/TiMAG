@@ -11,6 +11,15 @@
     <ion-item-sliding *ngFor="let routine of routines$ | async;">
       <ion-item [routerLink]="[routine?.id]" routerLinkActive="true">
         <ion-label>{{ routine.name }}</ion-label>
+        <ion-badge color="success" slot="end" *ngIf="isOwner(routine)">
+          owner
+        </ion-badge>
+        <ion-badge slot="end" *ngIf="isWriter(routine)">
+          writer
+        </ion-badge>
+        <ion-badge color="tertiary" slot="end" *ngIf="!isOwner(routine) && !isWriter(routine)">
+          reader
+        </ion-badge>
       </ion-item>
       <ion-item-options side="end">
         <ion-item-option (click)="delete(routine)" color="danger">
@@ -22,7 +31,5 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar>
-    <ion-button expand="block" (click)="addRoutine()">Add Routine</ion-button>
-  </ion-toolbar>
+  <ion-button expand="block" (click)="addRoutine()">Add Routine</ion-button>
 </ion-footer>

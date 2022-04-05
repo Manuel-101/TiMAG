@@ -17,6 +17,9 @@
     <ion-button [disabled]="loginForm.invalid" expand="block" type="submit">Login</ion-button>
   </form>
   <p>{{errorMessage}}</p>
-  <ion-button [routerLink]="['/register']">Register</ion-button>
-  <ion-button [routerLink]="['/password-recovery']">Forgot password</ion-button>
 </ion-content>
+
+<ion-footer>
+  <ion-button expand="block" [routerLink]="['/register']">Register</ion-button>
+  <ion-button expand="block" [routerLink]="['/password-recovery']">Forgot password</ion-button>
+</ion-footer>

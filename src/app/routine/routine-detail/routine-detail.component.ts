@@ -8,6 +8,7 @@ import { Routine } from 'src/app/models/routine';
 import { Exercise } from 'src/app/models/exercise';
 import { RoutineService } from 'src/app/services/routine.service';
 import { ChangeRightsComponent } from 'src/app/modals/change-rights/change-rights.component';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Component({
   selector: 'app-routine-detail',
@@ -17,14 +18,19 @@ import { ChangeRightsComponent } from 'src/app/modals/change-rights/change-right
 export class RoutineDetailComponent implements OnInit {
 
   public routine$: Observable<Routine>;
+  public routine: Routine;
+  public user;
 
   constructor(private route: ActivatedRoute,
     private routineService: RoutineService,
     private modalController: ModalController,
-    private router: Router) { }
+    private router: Router,
+    private auth: AngularFireAuth) { }
 
   async ngOnInit(): Promise<void> {
     this.routine$ = await this.routineService.getOne(this.route.snapshot.params.id);
+    this.user = await this.auth.currentUser;
+    this.routine$.subscribe(r => this.routine = r)
   }
 
   delete(exercise: Exercise) {
@@ -57,5 +63,19 @@ export class RoutineDetailComponent implements OnInit {
       }
     });
     await modal.present();
+  }
+
+  isOwner() {
+    if (!this.routine) {
+      return false;
+    }
+    return !this.routine && this.routine.owner === this.user.uid;
+  }
+
+  canWrite() {
+    if (!this.routine) {
+      return false;
+    }
+    return !this.routine && this.isOwner() || this.routine.writers.indexOf(this.user.email) > -1;
   }
 }
