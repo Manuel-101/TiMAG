@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
-// import * as firebase from 'firebase';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { combineLatest, EMPTY, Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+
 import { Exercise } from '../models/exercise';
 import { Routine } from '../models/routine';
-
-import { map, switchMap } from 'rxjs/operators';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RoutineService {
-  routines: Observable<(Routine & { exercises: Exercise[] })[]> = EMPTY;
+  routines: Observable<(Routine & { exercises: Exercise[] })[]> = EMPTY; // todo maybe suppr exercise in type def
   routinesCollection: AngularFirestoreCollection<Routine>;
 
   constructor(
@@ -24,32 +23,15 @@ export class RoutineService {
   async getAll() {
     if (this.routines === EMPTY) {
       const owner = await this.auth.currentUser;
-
       this.routinesCollection = this.afs.collection<Routine>('routines', ref => ref.where('owner', '==', owner.uid));
       const routinesOwner = this.routinesCollection.valueChanges({ idField: 'id' });
       const routinesWriter = this.afs.collection<Routine>('routines', ref => ref.where('writers', 'array-contains', owner.email))
-      .valueChanges({ idField: 'id' });
+        .valueChanges({ idField: 'id' });
       const routinesReader = this.afs.collection<Routine>('routines', ref => ref.where('readers', 'array-contains', owner.email))
-      .valueChanges({ idField: 'id' });
-
-      // this.routines = routinesOwner
+        .valueChanges({ idField: 'id' });
       this.routines = combineLatest([routinesOwner, routinesWriter, routinesReader]).pipe(
         map(([own, writer, reader]) => own.concat(writer).concat(reader))
       );
-
-      // .pipe(
-      //   map((routines: Routine[]) =>
-      //     routines.map((routine: Routine) => {
-      //       return this.afs
-      //         .collection(`routines/${routine.id}/exercises`).valueChanges({ idField: 'id' }).pipe(
-      //           map(exercises =>
-      //             Object.assign(routine, { exercises: exercises })
-      //           )
-      //         );
-      //     })
-      //   ),
-      //   flatMap(combined => combineLatest(combined))
-      // );
       this.routines.subscribe(console.log);
     }
     return this.routines;
@@ -67,10 +49,8 @@ export class RoutineService {
             Object.assign(routine, { exercises })
           )
         )),
-      );
+      ); // todo check if remove switchmap???
   }
-
-
 
   async addRoutine(routineName: string) {
     const routine = new Routine(routineName, (await this.auth.currentUser).uid);
@@ -80,7 +60,6 @@ export class RoutineService {
   async addExercise(routineId: string, exercise: Exercise) {
     await this.afs.collection<Exercise>(`routines/${routineId}/exercises`).add(Object.assign({}, exercise));
   }
-
 
   async addReader(routineId: string, reader: string) {
     await this.afs.doc(`routines/${routineId}`).update({
@@ -100,35 +79,4 @@ export class RoutineService {
       writers: firebase.firestore.FieldValue.arrayRemove(member),
     });
   }
-
-  // getAll() {
-  //   return this.playlists;
-  // }
-
-  // getOne(id: number) {
-  //   console.log(this.playlists, id)
-  //   return this.playlists.find(p => p.id === id);
-  // }
-
-  // addPlaylist(playlist: Playlist) {
-  //   this.playlists = this.playlists.concat(playlist);
-  // }
-
-  // removePlaylist(playlist: Playlist) {
-  //   this.playlists = this.playlists.filter(p => p.id !== playlist.id);
-  // }
-
-  // addTodo(playlistId: number, todo: Todo) {
-  //   const playlistIndex = this.playlists.findIndex(p => p.id === playlistId);
-  //   if (this.playlists[playlistIndex]) {
-  //     this.playlists[playlistIndex].todos = this.playlists[playlistIndex].todos.concat(todo);
-  //   }
-  // }
-
-  // removeTodo(playlistId: number, todo: Todo) {
-  //   const playlistIndex = this.playlists.findIndex(p => p.id === playlistId);
-  //   if (this.playlists[playlistIndex]) {
-  //     this.playlists[playlistIndex].todos = this.playlists[playlistIndex].todos.filter(t => t.id !== todo.id);
-  //   }
-  // }
 }

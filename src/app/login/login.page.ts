@@ -8,9 +8,10 @@ import { Router } from '@angular/router';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
-export class LoginPage implements OnInit {
+export class LoginPage {
 
   loginForm: FormGroup;
+  errorMessage = '';
 
   constructor(private fb: FormBuilder, private afAuth: AngularFireAuth, private router: Router) {
     this.loginForm = this.fb.group({
@@ -19,17 +20,13 @@ export class LoginPage implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
-
   login() {
     this.afAuth.signInWithEmailAndPassword(this.loginForm.get('login').value, this.loginForm.get('password').value)
       .then(value => {
-        console.log('logged');
         this.router.navigateByUrl('/routine');
       })
       .catch(err => {
-        console.log('wrong email or password', err.message);
+        this.errorMessage = 'Wrong email or password, ' + err.message;
       });
   }
 

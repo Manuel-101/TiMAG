@@ -9,7 +9,7 @@ export class Routine {
     writers: string[];
 
     constructor(name: string, owner: string, id?: string, exercises?: Exercise[]) {
-        this.id = id ?? (Math.floor(Math.random() * 100) + Date.now()).toString();
+        this.id = id ?? (Math.floor(Math.random() * 100) + Date.now()).toString(); // todo
         this.name = name;
         this.exercises = exercises ?? [];
         this.readers = [];

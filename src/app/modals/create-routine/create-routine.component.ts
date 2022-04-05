@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { Routine } from 'src/app/models/routine';
 import { RoutineService } from 'src/app/services/routine.service';
 
 @Component({
@@ -9,16 +8,14 @@ import { RoutineService } from 'src/app/services/routine.service';
   templateUrl: './create-routine.component.html',
   styleUrls: ['./create-routine.component.scss'],
 })
-export class CreateRoutineComponent implements OnInit {
+export class CreateRoutineComponent {
 
-  routineForm: FormGroup
+  routineForm: FormGroup;
 
   constructor(private fb: FormBuilder, private routineService: RoutineService,
     private modalController: ModalController) {
     this.routineForm = this.fb.group({ name: ['', [Validators.required, Validators.minLength(3)]] });
   }
-
-  ngOnInit() { }
 
   addRoutine() {
     this.routineService.addRoutine(this.routineForm.get('name').value);

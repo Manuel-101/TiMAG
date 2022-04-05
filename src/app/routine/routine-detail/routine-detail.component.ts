@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { Observable } from 'rxjs';
+
 import { CreateExerciseComponent } from 'src/app/modals/create-exercise/create-exercise.component';
 import { Routine } from 'src/app/models/routine';
 import { Exercise } from 'src/app/models/exercise';
 import { RoutineService } from 'src/app/services/routine.service';
-import { Observable } from 'rxjs';
 import { ChangeRightsComponent } from 'src/app/modals/change-rights/change-rights.component';
 
 @Component({
@@ -24,9 +25,6 @@ export class RoutineDetailComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.routine$ = await this.routineService.getOne(this.route.snapshot.params.id);
-    console.log(this.routine$);
-    this.routine$.subscribe(console.log);
-
   }
 
   delete(exercise: Exercise) {
@@ -35,7 +33,7 @@ export class RoutineDetailComponent implements OnInit {
     // this.routine = this.routineService.getOne(+this.route.snapshot.params.id);
   }
 
-  async openModal() {
+  async addExercise() {
     const modal = await this.modalController.create({
       component: CreateExerciseComponent,
       componentProps: {
@@ -44,11 +42,12 @@ export class RoutineDetailComponent implements OnInit {
     });
     await modal.present();
   }
+
   async deleteRoutine() {
     await this.routineService.deleteOne(this.route.snapshot.params.id);
     await this.router.navigate(['/routine']);
-
   }
+
   async changeRights() {
     const modal = await this.modalController.create({
       component: ChangeRightsComponent,

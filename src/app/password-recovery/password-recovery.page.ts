@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -8,17 +8,15 @@ import { Router } from '@angular/router';
   templateUrl: './password-recovery.page.html',
   styleUrls: ['./password-recovery.page.scss'],
 })
-export class PasswordRecoveryPage implements OnInit {
+export class PasswordRecoveryPage {
 
   form: FormGroup;
+  errorMessage = '';
 
   constructor(private fb: FormBuilder, private afAuth: AngularFireAuth, private router: Router) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });
-  }
-
-  ngOnInit(): void {
   }
 
   resetPassword() {
@@ -27,7 +25,7 @@ export class PasswordRecoveryPage implements OnInit {
         this.router.navigateByUrl('/login');
       })
       .catch(err => {
-        console.log('wrong email or password', err.message);
+        this.errorMessage = 'Wrong email, ' + err.message;
       });
   }
 }

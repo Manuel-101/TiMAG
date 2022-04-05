@@ -5,8 +5,8 @@ export class Exercise {
     time: string;
     sets: number;
 
-    constructor(name: string, desc: string, time: string, sets : number, id?: string ) {
-        this.id = id;// ?? Math.floor(Math.random() * 100) + Date.now().toString();
+    constructor(name: string, desc: string, time: string, sets: number, id?: string) {
+        this.id = id; // ?? Math.floor(Math.random() * 100) + Date.now().toString(); todo
         this.name = name;
         this.desc = desc;
         this.time = time;

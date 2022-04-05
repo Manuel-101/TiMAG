@@ -22,16 +22,15 @@ export class RoutinePage implements OnInit {
     this.routines$ = await this.routineService.getAll();
   }
 
-  // delete(routine: Routine) {
+  // delete(routine: Routine) { // todo
   //   this.routineService.removeRoutine(routine);
   // }
 
-  async openModal() {
+  async addRoutine() {
     const modal = await this.modalController.create({
       component: CreateRoutineComponent
     });
     await modal.present();
-    // this.routines = this.routineService.getAll();
   }
 
 }

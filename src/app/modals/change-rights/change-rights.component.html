@@ -4,7 +4,7 @@
     <ion-item-sliding *ngFor="let member of routine.writers">
       <ion-item>
         <ion-label>{{ member }}</ion-label>
-        <ion-select value="writer" (ionChange)="setType($event, member)">
+        <ion-select value="writer" (ionChange)="changeRights($event, member)">
           <ion-select-option value="reader">reader</ion-select-option>
           <ion-select-option value="writer">writer</ion-select-option>
         </ion-select>
@@ -19,7 +19,7 @@
     <ion-item-sliding *ngFor="let member of routine.readers">
       <ion-item>
         <ion-label>{{ member }}</ion-label>
-        <ion-select value="reader" (ionChange)="setType($event, member)">
+        <ion-select value="reader" (ionChange)="changeRights($event, member)">
           <ion-select-option value="reader">reader</ion-select-option>
           <ion-select-option value="writer">writer</ion-select-option>
         </ion-select>

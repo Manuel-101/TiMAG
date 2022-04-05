@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Exercise } from 'src/app/models/exercise';
@@ -9,7 +9,7 @@ import { RoutineService } from 'src/app/services/routine.service';
   templateUrl: './create-exercise.component.html',
   styleUrls: ['./create-exercise.component.css']
 })
-export class CreateExerciseComponent implements OnInit {
+export class CreateExerciseComponent {
 
   @Input() routineId: string;
 
@@ -21,9 +21,6 @@ export class CreateExerciseComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', Validators.maxLength(255)]
     });
-  }
-
-  ngOnInit(): void {
   }
 
   addExercise() {

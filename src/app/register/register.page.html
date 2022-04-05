@@ -16,5 +16,6 @@
     </ion-item>
     <ion-button [disabled]="registerForm.invalid" expand="block" type="submit">Validate</ion-button>
   </form>
+  <p>{{errorMessage}}</p>
   <ion-button [routerLink]="['/login']">Login</ion-button>
 </ion-content>

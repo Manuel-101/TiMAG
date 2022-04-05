@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+
 import { RoutineService } from 'src/app/services/routine.service';
 import { ChangeRightsComponent } from '../change-rights/change-rights.component';
 
@@ -9,7 +10,7 @@ import { ChangeRightsComponent } from '../change-rights/change-rights.component'
   templateUrl: './add-reader.component.html',
   styleUrls: ['./add-reader.component.scss'],
 })
-export class AddReaderComponent implements OnInit {
+export class AddReaderComponent {
 
   @Input() routineId: string;
 
@@ -22,9 +23,6 @@ export class AddReaderComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       type: ['reader', [Validators.required]],
     });
-  }
-
-  ngOnInit(): void {
   }
 
   async addReader() {

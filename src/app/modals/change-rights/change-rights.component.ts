@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Routine } from 'src/app/models/routine';
@@ -15,16 +14,14 @@ export class ChangeRightsComponent implements OnInit {
 
   @Input() routineId: string;
   public routine$: Observable<Routine>;
+
   constructor(
     private routineService: RoutineService,
     private modalController: ModalController,
-    private route: ActivatedRoute,
   ) { }
 
   async ngOnInit() {
     this.routine$ = await this.routineService.getOne(this.routineId);
-    console.log(this.routine$);
-    this.routine$.subscribe(console.log);
   }
 
   async addReader() {
@@ -43,12 +40,12 @@ export class ChangeRightsComponent implements OnInit {
     this.routineService.removeRights(this.routineId, member);
   }
 
-  setType(event, member){
+  changeRights(event, member) {
     const type = event.target.value;
     this.routineService.removeRights(this.routineId, member);
-    if(type === "writer"){
+    if (type === 'writer') {
       this.routineService.addWriter(this.routineId, member);
-    }else{
+    } else {
       this.routineService.addReader(this.routineId, member);
     }
   }

@@ -6,7 +6,8 @@ const routes: Routes = [
   {
     path: '',
     component: RoutinePage,
-  },{
+  },
+  {
     path: ':id',
     loadChildren: () => import('./routine-detail/routine-detail.module').then(m => m.RoutineDetailModule),
   }
@@ -16,4 +17,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class RoutinePageRoutingModule {}
+export class RoutinePageRoutingModule { }

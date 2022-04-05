@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -8,9 +8,10 @@ import { Router } from '@angular/router';
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
 })
-export class RegisterPage implements OnInit {
+export class RegisterPage {
 
   registerForm: FormGroup;
+  errorMessage = '';
 
   constructor(private fb: FormBuilder, private afAuth: AngularFireAuth, private router: Router) {
     this.registerForm = this.fb.group({
@@ -19,24 +20,19 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
-
   register() {
     this.afAuth.createUserWithEmailAndPassword(this.registerForm.get('email').value, this.registerForm.get('password').value)
       .then(value => {
-        this.SendVerificationMail();
+        this.sendVerificationMail();
       })
       .catch(err => {
-        console.log('something wrong happened, sorry!', err.message);
+        this.errorMessage = 'Something wrong happened, ' + err.message;
       });
   }
 
-  SendVerificationMail() {
+  sendVerificationMail() {
     return this.afAuth.currentUser
       .then((u: any) => u.sendEmailVerification())
-      .then(() => {
-        this.router.navigate(['/login']);
-      });
+      .then(() => this.router.navigate(['/login']));
   }
 }
