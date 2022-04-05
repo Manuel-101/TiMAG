@@ -1,38 +1,35 @@
 import { NgModule } from '@angular/core';
-import { AngularFireAuthGuard } from '@angular/fire/compat/auth-guard';
+import { AngularFireAuthGuard, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/compat/auth-guard';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { UnauthGuard } from './guards/unauth.guard';
 
 const routes: Routes = [
   {
     path: 'routine',
     loadChildren: () => import('./routine/routine.module').then(m => m.RoutinePageModule),
     canActivate: [AngularFireAuthGuard],
-  },
-  {
-    path: 'routine-details',
-    loadChildren: () => import('./routine/routine-detail/routine-detail.module').then(m => m.RoutineDetailModule),
-    canActivate: [AngularFireAuthGuard],
-  },
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
+    data: { authGuardPipe: () => redirectUnauthorizedTo(['login']) }
   },
   {
     path: 'login',
     loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule),
-    canActivate: [UnauthGuard],
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: () => redirectLoggedInTo(['routine']) }
   },
   {
     path: 'register',
     loadChildren: () => import('./register/register.module').then(m => m.RegisterPageModule),
-    canActivate: [UnauthGuard],
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: () => redirectLoggedInTo(['routine']) }
   },
   {
     path: 'password-recovery',
     loadChildren: () => import('./password-recovery/password-recovery.module').then(m => m.PasswordRecoveryPageModule),
-    canActivate: [UnauthGuard],
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: () => redirectLoggedInTo(['routine']) }
+  },
+  {
+    path: '**',
+    redirectTo: 'routine',
   },
 ];
 
