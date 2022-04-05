@@ -66,16 +66,10 @@ export class RoutineDetailComponent implements OnInit {
   }
 
   isOwner() {
-    if (!this.routine) {
-      return false;
-    }
-    return !this.routine && this.routine.owner === this.user.uid;
+    return this.routine && this.routine.owner === this.user.uid;
   }
 
   canWrite() {
-    if (!this.routine) {
-      return false;
-    }
-    return !this.routine && this.isOwner() || this.routine.writers.indexOf(this.user.email) > -1;
+    return this.routine && (this.isOwner() || this.routine.writers.indexOf(this.user.email) > -1);
   }
 }
