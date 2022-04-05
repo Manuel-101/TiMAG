@@ -1,11 +1,13 @@
 <form [formGroup]="addReaderForm" (ngSubmit)="addReader()">
   <ion-item>
-      <ion-label position="stacked">email</ion-label>
-      <ion-input formControlName="email"></ion-input>
+    <ion-label position="stacked">email</ion-label>
+    <ion-input formControlName="email"></ion-input>
   </ion-item>
-  <!-- <ion-item> // todo checkbox
-    <ion-label position="stacked">Description</ion-label>
-    <ion-input formControlName="description"></ion-input>
-</ion-item> -->
+  <ion-item>
+    <ion-select value="reader" formControlName="type">
+      <ion-select-option value="reader">reader</ion-select-option>
+      <ion-select-option value="writer">writer</ion-select-option>
+    </ion-select>
+  </ion-item>
   <ion-button [disabled]="addReaderForm.invalid" expand="block" type="submit">Validate</ion-button>
 </form>

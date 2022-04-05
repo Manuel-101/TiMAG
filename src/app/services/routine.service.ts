@@ -27,15 +27,15 @@ export class RoutineService {
 
       this.routinesCollection = this.afs.collection<Routine>('routines', ref => ref.where('owner', '==', owner.uid));
       const routinesOwner = this.routinesCollection.valueChanges({ idField: 'id' });
-      const routinesWriter = this.afs.collection<Routine>('routines', ref => ref.where('writers', 'array-contains', owner.email)).valueChanges({ idField: 'id' });
-      const routinesReader = this.afs.collection<Routine>('routines', ref => ref.where('readers', 'array-contains', owner.email)).valueChanges({ idField: 'id' });
+      const routinesWriter = this.afs.collection<Routine>('routines', ref => ref.where('writers', 'array-contains', owner.email))
+      .valueChanges({ idField: 'id' });
+      const routinesReader = this.afs.collection<Routine>('routines', ref => ref.where('readers', 'array-contains', owner.email))
+      .valueChanges({ idField: 'id' });
 
       // this.routines = routinesOwner
       this.routines = combineLatest([routinesOwner, routinesWriter, routinesReader]).pipe(
-        map(([owner, writer, reader]) => {
-          return owner.concat(writer).concat(reader);
-        })
-      )
+        map(([own, writer, reader]) => own.concat(writer).concat(reader))
+      );
 
       // .pipe(
       //   map((routines: Routine[]) =>
@@ -56,22 +56,17 @@ export class RoutineService {
   }
 
   async deleteOne(id: string): Promise<void> {
-
-    const owner = await this.auth.currentUser;
     await this.afs.doc(`routines/${id}`).delete();
-    //await this.routinesCollection.doc(id).delete();
   }
 
   getOne(id: string): Observable<Routine> {
     return this.afs.doc<Routine>(`routines/${id}`).valueChanges({ idField: 'id' })
       .pipe(
-        switchMap((routine: Routine) => {
-          return this.afs.collection(`routines/${routine.id}/exercises`).valueChanges({ idField: 'id' }).pipe(
-            map(exercises =>
-              Object.assign(routine, { exercises: exercises })
-            )
-          );
-        }),
+        switchMap((routine: Routine) => this.afs.collection(`routines/${routine.id}/exercises`).valueChanges({ idField: 'id' }).pipe(
+          map(exercises =>
+            Object.assign(routine, { exercises })
+          )
+        )),
       );
   }
 
@@ -82,28 +77,25 @@ export class RoutineService {
     return await this.routinesCollection.add(Object.assign({}, routine));
   }
 
-  addExercise(routineId: string, exercise: Exercise) {
-    this.afs.collection<Exercise>(`routines/${routineId}/exercises`).add(Object.assign({}, exercise));
-    console.log(exercise);
-    console.log(routineId);
-
+  async addExercise(routineId: string, exercise: Exercise) {
+    await this.afs.collection<Exercise>(`routines/${routineId}/exercises`).add(Object.assign({}, exercise));
   }
 
 
-  addReader(routineId: string, reader: string) {
-    this.afs.doc(`routines/${routineId}`).update({
+  async addReader(routineId: string, reader: string) {
+    await this.afs.doc(`routines/${routineId}`).update({
       readers: firebase.firestore.FieldValue.arrayUnion(reader)
     });
   }
 
-  addWriter(routineId: string, writer: string) {
-    this.afs.doc(`routines/${routineId}`).update({
+  async addWriter(routineId: string, writer: string) {
+    await this.afs.doc(`routines/${routineId}`).update({
       writers: firebase.firestore.FieldValue.arrayUnion(writer)
     });
   }
 
-  removeRights(routineId: string, member: string) {
-    this.afs.doc(`routines/${routineId}`).update({
+  async removeRights(routineId: string, member: string) {
+    await this.afs.doc(`routines/${routineId}`).update({
       readers: firebase.firestore.FieldValue.arrayRemove(member),
       writers: firebase.firestore.FieldValue.arrayRemove(member),
     });

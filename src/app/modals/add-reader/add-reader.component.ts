@@ -20,15 +20,21 @@ export class AddReaderComponent implements OnInit {
     private routineService: RoutineService) {
     this.addReaderForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
+      type: ['reader', [Validators.required]],
     });
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
   }
 
   async addReader() {
-    this.routineService.addReader(this.routineId, this.addReaderForm.get('email').value);
-    this.modalController.dismiss();
+    await this.routineService.removeRights(this.routineId, this.addReaderForm.get('email').value);
+    if (this.addReaderForm.get('type').value === 'writer') {
+      await this.routineService.addWriter(this.routineId, this.addReaderForm.get('email').value);
+    } else {
+      await this.routineService.addReader(this.routineId, this.addReaderForm.get('email').value);
+    }
+    await this.modalController.dismiss();
     const modal = await this.modalController.create({
       component: ChangeRightsComponent,
       id: 'changeRights',
