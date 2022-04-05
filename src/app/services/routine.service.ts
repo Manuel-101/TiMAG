@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 // import * as firebase from 'firebase';
-import { EMPTY, Observable } from 'rxjs';
+import { combineLatest, EMPTY, Observable } from 'rxjs';
 import { Exercise } from '../models/exercise';
 import { Routine } from '../models/routine';
 
-import { flatMap, map, single, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Injectable({
@@ -26,10 +26,17 @@ export class RoutineService {
       const owner = await this.auth.currentUser;
 
       this.routinesCollection = this.afs.collection<Routine>('routines', ref => ref.where('owner', '==', owner.uid));
-      this.routines = this.routinesCollection.valueChanges({ idField: 'id' });
-      // todo get routine where i am the reader or writer
-      // todo if user in routine.readers
-      // todo modify rules
+      const routinesOwner = this.routinesCollection.valueChanges({ idField: 'id' });
+      const routinesWriter = this.afs.collection<Routine>('routines', ref => ref.where('writers', 'array-contains', owner.email)).valueChanges({ idField: 'id' });
+      const routinesReader = this.afs.collection<Routine>('routines', ref => ref.where('readers', 'array-contains', owner.email)).valueChanges({ idField: 'id' });
+
+      // this.routines = routinesOwner
+      this.routines = combineLatest([routinesOwner, routinesWriter, routinesReader]).pipe(
+        map(([owner, writer, reader]) => {
+          return owner.concat(writer).concat(reader);
+        })
+      )
+
       // .pipe(
       //   map((routines: Routine[]) =>
       //     routines.map((routine: Routine) => {
@@ -53,15 +60,6 @@ export class RoutineService {
     const owner = await this.auth.currentUser;
     await this.afs.doc(`routines/${id}`).delete();
     //await this.routinesCollection.doc(id).delete();
-  }
-
-  getAldddsl() {
-    return this.routines;
-    // const owner = await this.auth.currentUser;
-    // return this.afs.collection<Routine>('routines', ref => ref.where('owner', '==', owner.uid)).valueChanges({ idfield: 'id' });
-    // combineLatest([ownern reader]).pipe()
-    // return AngularFirestore.collectionData()
-
   }
 
   getOne(id: string): Observable<Routine> {
