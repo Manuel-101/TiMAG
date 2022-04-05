@@ -1,12 +1,22 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
+  <ion-toolbar color="light">
+    
+    <ion-button size="small" color="medium" shape="round" slot="start" expand="block" (click)="goBack()" left>
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title color="dark">
       {{(routine$ | async)?.name | titlecase}}
     </ion-title>
+    <ion-button slot="end" color="medium" slot="end" expand="block" (click)="changeRights()" *ngIf="isOwner()" left>
+      <ion-icon name="body-outline"></ion-icon>
+    </ion-button>
+    <ion-button slot="end" color="success" slot="end" expand="block" (click)="addExercise()" *ngIf="canWrite()" left>
+      <ion-icon name="add-circle-outline"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" >
   <ion-list>
     <ng-container *ngIf="routine$ | async as routine">
       <ion-item-sliding *ngFor="let exercise of routine.exercises">
@@ -24,7 +34,7 @@
 </ion-content>
 
 <ion-footer>
-  <ion-button expand="block" (click)="addExercise()" *ngIf="canWrite()">Add Exercise</ion-button>
-  <ion-button expand="block" (click)="deleteRoutine()" *ngIf="canWrite()">Delete Routine</ion-button>
-  <ion-button expand="block" (click)="changeRights()" *ngIf="isOwner()">Change Rights</ion-button>
+  <!-- <ion-button shape="round" expand="block" (click)="addExercise()" *ngIf="canWrite()">Add Exercise</ion-button> -->
+  <ion-button color="danger" shape="round" expand="block" (click)="deleteRoutine()" *ngIf="canWrite()">Delete Routine</ion-button>
+  <!-- <ion-button shape="round" expand="block" (click)="changeRights()" *ngIf="isOwner()">Change Rights</ion-button> -->
 </ion-footer>

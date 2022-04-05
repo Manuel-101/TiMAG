@@ -9,6 +9,7 @@ import { Exercise } from 'src/app/models/exercise';
 import { RoutineService } from 'src/app/services/routine.service';
 import { ChangeRightsComponent } from 'src/app/modals/change-rights/change-rights.component';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-routine-detail',
@@ -25,7 +26,8 @@ export class RoutineDetailComponent implements OnInit {
     private routineService: RoutineService,
     private modalController: ModalController,
     private router: Router,
-    private auth: AngularFireAuth) { }
+    private auth: AngularFireAuth,
+    private location: Location) { }
 
   async ngOnInit(): Promise<void> {
     this.routine$ = await this.routineService.getOne(this.route.snapshot.params.id);
@@ -71,5 +73,9 @@ export class RoutineDetailComponent implements OnInit {
 
   canWrite() {
     return this.routine && (this.isOwner() || this.routine.writers.indexOf(this.user.email) > -1);
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

@@ -1,8 +1,11 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar color="light">
     <ion-title>
       Routines
     </ion-title>
+    <ion-button color="medium" shape="round" slot="end" left>
+      <ion-icon name="person-outline"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -31,5 +34,8 @@
 </ion-content>
 
 <ion-footer>
-  <ion-button expand="block" (click)="addRoutine()">Add Routine</ion-button>
+  <ion-button color="success" expand="block" (click)="addRoutine()">
+    <ion-icon name="add-outline"></ion-icon>
+  </ion-button>
+
 </ion-footer>
