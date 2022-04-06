@@ -10,7 +10,7 @@ const routes: Routes = [
   {
     path: ':id',
     loadChildren: () => import('./routine-detail/routine-detail.module').then(m => m.RoutineDetailModule),
-  }
+  },
 ];
 
 @NgModule({

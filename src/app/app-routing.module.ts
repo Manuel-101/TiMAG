@@ -31,6 +31,10 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'routine',
   },
+  {
+    path: 'exercise',
+    loadChildren: () => import('./exercise/exercise.module').then( m => m.ExercisePageModule)
+  },
 ];
 
 @NgModule({

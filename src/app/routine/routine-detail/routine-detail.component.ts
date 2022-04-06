@@ -33,6 +33,7 @@ export class RoutineDetailComponent implements OnInit {
     this.routine$ = await this.routineService.getOne(this.route.snapshot.params.id);
     this.user = await this.auth.currentUser;
     this.routine$.subscribe(r => this.routine = r)
+    //console.log("here : " + this.routine.exercises.toString());
   }
 
   delete(exercise: Exercise) {
