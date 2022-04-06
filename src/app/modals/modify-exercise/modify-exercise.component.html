@@ -1,0 +1,13 @@
+<form [formGroup]="abc" (ngSubmit)="modifyExercise()">
+  <ion-item>
+      <ion-label position="stacked">Sets</ion-label>
+      <ion-input formControlName="sets"></ion-input>
+
+      <ion-label position="stacked">Time</ion-label>
+      <ion-input formControlName="time"></ion-input>
+  </ion-item>
+  <ion-button [disabled]="abc.invalid" expand="block" type="submit">Validate</ion-button>
+</form>
+<ion-content>
+  <ion-button color="light" expand="block" type="submit" (click)="dismiss()">Cancel</ion-button>
+</ion-content>

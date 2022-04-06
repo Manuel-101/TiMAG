@@ -30,4 +30,11 @@ export class ExerciseService {
     // ); // todo check if remove switchmap???
     return await this.afs.collection("routines").doc(routineId).collection("exercises").doc(id).get().toPromise();
   }
+
+
+  increaseSets(routineId: string, id: string, s: number, t: number) : void {
+    this.afs.collection("routines").doc(routineId).collection("exercises").doc(id).update({sets : s});
+    this.afs.collection("routines").doc(routineId).collection("exercises").doc(id).update({time : t});
+
+  }
 }

@@ -1,5 +1,8 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="light">
+    <ion-button size="small" color="medium" shape="round" slot="start" (click)="goBack()" routerDirection="back" left>
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
     <ion-title>{{ exercise?.name }}</ion-title>
     <!-- <ion-label>{{ exercise?.name }}</ion-label>
     <ion-label>{{ exercise?.desc }}</ion-label>
@@ -8,6 +11,18 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content style="text-align:center" >
+    <ion-button expand="block" color="danger" shape="round" (click)="modifyExercise()" routerDirection="back" left>
+      <ion-icon name="barbell-outline"></ion-icon>
+       {{ exercise?.sets }}
+    </ion-button><br>
+    <ion-button size="large" color="warning" shape="round" expand="block" (click)="goBack()" routerDirection="back" left>
+      <ion-icon name="help-circle-outline"></ion-icon>
+       {{ exercise?.desc }}
+    </ion-button>
+    <ion-button size="large" shape="round" color="tertiary" shape="round" (click)="goBack()" routerDirection="back" left>
+      <ion-icon name="alarm-outline"></ion-icon>
+       {{ exercise?.time }}
+    </ion-button>
 
 </ion-content>
