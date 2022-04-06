@@ -24,6 +24,10 @@ export class ChangeRightsComponent implements OnInit {
     this.routine$ = await this.routineService.getOne(this.routineId);
   }
 
+  async goBack(){
+    await this.modalController.dismiss();
+  }
+
   async addReader() {
     await this.modalController.dismiss();
     const modal = await this.modalController.create({

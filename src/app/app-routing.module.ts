@@ -4,6 +4,12 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: 'user',
+    loadChildren: () => import('./user/user.module').then(m => m.UserPageModule),
+    canActivate: [AngularFireAuthGuard],
+    data: { authGuardPipe: () => redirectUnauthorizedTo(['login']) }
+  },
+  {
     path: 'routine',
     loadChildren: () => import('./routine/routine.module').then(m => m.RoutinePageModule),
     canActivate: [AngularFireAuthGuard],
@@ -34,6 +40,10 @@ const routes: Routes = [
   {
     path: 'exercise',
     loadChildren: () => import('./exercise/exercise.module').then( m => m.ExercisePageModule)
+  },
+  {
+    path: 'user',
+    loadChildren: () => import('./user/user.module').then( m => m.UserPageModule)
   },
 ];
 

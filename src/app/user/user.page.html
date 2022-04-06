@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-button size="small" color="medium" shape="round" slot="start" expand="block" (click)="goBack()" routerDirection="back" left>
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+    <ion-title >User</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button color="danger" shape="round" expand="block" (click)="logout()" [routerLink]="['/login']">
+    <ion-icon name="log-out-outline"></ion-icon>
+  </ion-button>
+</ion-content>
