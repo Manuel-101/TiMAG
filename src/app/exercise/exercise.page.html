@@ -12,7 +12,7 @@
 </ion-header>
 
 <ion-content style="text-align:center" >
-    <ion-button expand="block" color="danger" shape="round" (click)="modifyExercise()" routerDirection="back" left>
+    <ion-button expand="block" color="danger" shape="round" (click)="goBack()" routerDirection="back" left>
       <ion-icon name="barbell-outline"></ion-icon>
        {{ exercise?.sets }}
     </ion-button><br>
@@ -23,6 +23,10 @@
     <ion-button size="large" shape="round" color="tertiary" shape="round" (click)="goBack()" routerDirection="back" left>
       <ion-icon name="alarm-outline"></ion-icon>
        {{ exercise?.time }}
+    </ion-button>
+
+    <ion-button expand="block" size="large" shape="round" color="tertiary" shape="round" (click)="modifyExercise()" routerDirection="back" left>
+    Modify
     </ion-button>
 
 </ion-content>
