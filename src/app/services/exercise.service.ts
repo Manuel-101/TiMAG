@@ -18,7 +18,7 @@ export class ExerciseService {
     private auth: AngularFireAuth,
   ) { }
 
-  async getOne(routineId: string, id: string) {
+  getOne(routineId: string, id: string): Observable<Exercise> {
     //return new Exercise("a", "b", "c", 5);
     // return this.afs.doc<Exercise>(`routines/${routineId}/exercises/${id}`).valueChanges({ idField: 'id' })
     // .pipe(
@@ -28,13 +28,13 @@ export class ExerciseService {
     //     )
     //   )),
     // ); // todo check if remove switchmap???
-    return await this.afs.collection("routines").doc(routineId).collection("exercises").doc(id).get().toPromise();
+    return this.afs.doc<Exercise>(`routines/${routineId}/exercises/${id}`).valueChanges({ idField: 'id' });
   }
 
 
   increaseSets(routineId: string, id: string, s: number, t: number) : void {
-    this.afs.collection("routines").doc(routineId).collection("exercises").doc(id).update({sets : s});
-    this.afs.collection("routines").doc(routineId).collection("exercises").doc(id).update({time : t});
+    this.afs.collection("routines").doc(routineId).collection("exercises").doc(id).update({sets: s});
+    this.afs.collection("routines").doc(routineId).collection("exercises").doc(id).update({time: t});
 
   }
 }

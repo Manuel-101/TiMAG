@@ -9,7 +9,7 @@ const routes: Routes = [
     component: RoutineDetailComponent
   },
   {
-    path: ':id',
+    path: ':exerciseId',
     loadChildren: () => import('../../exercise/exercise-routing.module').then(m => m.ExercisePageRoutingModule),
   }
 ];

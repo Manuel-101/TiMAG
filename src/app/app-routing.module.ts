@@ -38,10 +38,6 @@ const routes: Routes = [
     redirectTo: 'routine',
   },
   {
-    path: 'exercise',
-    loadChildren: () => import('./exercise/exercise.module').then( m => m.ExercisePageModule)
-  },
-  {
     path: 'user',
     loadChildren: () => import('./user/user.module').then( m => m.UserPageModule)
   },

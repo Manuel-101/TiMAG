@@ -3,7 +3,7 @@
     <ion-button size="small" color="medium" shape="round" slot="start" (click)="goBack()" routerDirection="back" left>
       <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
-    <ion-title>{{ exercise?.name }}</ion-title>
+    <ion-title>{{ (exercise$ | async)?.name }}</ion-title>
     <!-- <ion-label>{{ exercise?.name }}</ion-label>
     <ion-label>{{ exercise?.desc }}</ion-label>
     <ion-label>{{ exercise?.time }}</ion-label>
@@ -11,21 +11,23 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content style="text-align:center" >
+<ion-content style="text-align:center">
+  <ng-container *ngIf="exercise$ | async as exercise">
     <ion-button expand="block" color="danger" shape="round" (click)="goBack()" routerDirection="back" left>
       <ion-icon name="barbell-outline"></ion-icon>
-       {{ exercise?.sets }}
+      {{ exercise.sets }}
     </ion-button><br>
     <ion-button size="large" color="warning" shape="round" expand="block" (click)="goBack()" routerDirection="back" left>
       <ion-icon name="help-circle-outline"></ion-icon>
-       {{ exercise?.desc }}
+      {{ exercise.desc }}
     </ion-button>
     <ion-button size="large" shape="round" color="tertiary" shape="round" (click)="goBack()" routerDirection="back" left>
       <ion-icon name="alarm-outline"></ion-icon>
-       {{ exercise?.time }}
+      {{ exercise.time }}
     </ion-button>
+  </ng-container>
 
-    <ion-button expand="block" size="large" shape="round" color="tertiary" shape="round" (click)="modifyExercise()" routerDirection="back" left>
+  <ion-button expand="block" size="large" shape="round" color="tertiary" shape="round" (click)="modifyExercise()" routerDirection="back" left>
     Modify
     </ion-button>
 

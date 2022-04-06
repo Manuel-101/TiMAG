@@ -17,7 +17,6 @@ export class ExercisePage implements OnInit {
   public exercise$: Observable<Exercise>;
   public user;
   public currentRoutine : string;
-  public exercise: Exercise;
 
   constructor(
     private router: Router,
@@ -28,9 +27,8 @@ export class ExercisePage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.currentRoutine = this.router.url.toString().substring(9,29);
-    this.exercise = await (await this.exerciseService.getOne(this.currentRoutine, this.route.snapshot.params.id)).data() as Exercise;
-    console.log(await (await this.exerciseService.getOne(this.currentRoutine, this.route.snapshot.params.id)).data());
+    this.currentRoutine = this.route.snapshot.params.id;
+    this.exercise$ = this.exerciseService.getOne(this.currentRoutine, this.route.snapshot.params.exerciseId);
   }
 
   // increaseSets(){
@@ -52,7 +50,7 @@ export class ExercisePage implements OnInit {
       component: ModifyExerciseComponent,
       componentProps: {
         routineId: this.currentRoutine,
-        exerciseId: this.route.snapshot.params.id
+        exerciseId: this.route.snapshot.params.exerciseId
       }
     });
     await modal.present();
