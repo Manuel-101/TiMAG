@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { Observable } from 'rxjs';
 import { Exercise } from '../models/exercise';
 import { ExerciseService } from '../services/exercise.service';
 import { Location } from '@angular/common';
 import { ModifyExerciseComponent } from '../modals/modify-exercise/modify-exercise.component';
+import { Observable } from 'rxjs';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-exercise',
@@ -18,6 +19,11 @@ export class ExercisePage implements OnInit {
   public user;
   public currentRoutine : string;
 
+  public countdownNumberEl;
+  public countdownAnimNum;
+  public countdown = 5;
+
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -29,6 +35,12 @@ export class ExercisePage implements OnInit {
   async ngOnInit() {
     this.currentRoutine = this.route.snapshot.params.id;
     this.exercise$ = this.exerciseService.getOne(this.currentRoutine, this.route.snapshot.params.exerciseId);
+    this.countdownNumberEl = document.getElementById('countdown-number');
+    this.countdownNumberEl.textContent = this.countdown.toString();
+    this.countdownAnimNum = document.documentElement.style.setProperty('--animation-duration', this.countdown.toString());
+    this.currentRoutine = this.router.url.toString().substring(9,29);
+
+    setInterval( () => {this.myfuntion();}, 1000);
   }
 
   // increaseSets(){
@@ -55,4 +67,13 @@ export class ExercisePage implements OnInit {
     });
     await modal.present();
   }
+
+  myfuntion() {
+    console.log("countdown is at " + this.countdownNumberEl);
+    this.countdown = --this.countdown <= 0 ? 10 : this.countdown;
+    this.countdownNumberEl.textContent = this.countdown.toString();
+  }
+
+
+  
 }
